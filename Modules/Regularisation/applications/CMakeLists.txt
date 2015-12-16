@@ -14,12 +14,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-add_subdirectory(Common)
-add_subdirectory(Geometry)
-add_subdirectory(Image)
-add_subdirectory(Registration)
-add_subdirectory(Regularisation)
-add_subdirectory(Transformation)
-if(WITH_VTK)
-  add_subdirectory(PolyData)
-endif()
+include_directories("../../Common/include")
+link_libraries(Common)
+include_directories("../../Geometry/include")
+link_libraries(Geometry)
+include_directories("../../Image/include")
+link_libraries(Image)
+include_directories("../../Regularisation/include")
+link_libraries(Regularisation)
+
+macro(irtk_add_application _name)
+  add_executable(${_name} ${ARGN})
+  set_target_properties(${_name} PROPERTIES
+                        OUTPUT_NAME irtk-${_name})
+  install(TARGETS ${_name}
+          DESTINATION ${IRTK_INSTALL_BINDIR})
+endmacro()
+
+irtk_add_application(denseCRFRegularisation common.cpp denseCRFRegularisation.cc)
+
+

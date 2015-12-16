@@ -14,12 +14,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-add_subdirectory(Common)
-add_subdirectory(Geometry)
-add_subdirectory(Image)
-add_subdirectory(Registration)
-add_subdirectory(Regularisation)
-add_subdirectory(Transformation)
-if(WITH_VTK)
-  add_subdirectory(PolyData)
+set(IRTK_MODULE_NAME "Regularisation")
+set(IRTK_MODULE_INSTALL_INCLUDEDIR
+  "${IRTK_INSTALL_INCLUDEDIR}/irtk/${IRTK_MODULE_NAME}")
+
+file(GLOB IRTK_MODULE_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
+
+install(FILES ${IRTK_MODULE_HEADERS}
+        DESTINATION "${IRTK_MODULE_INSTALL_INCLUDEDIR}"
+        COMPONENT dev)
+
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
+
+add_subdirectory(src)
+
+if(BUILD_APPLICATIONS)
+    add_subdirectory(applications)
 endif()
